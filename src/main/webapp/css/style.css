@@ -1,0 +1,11 @@
+.primary-bg {
+	background: #2196f3!important;
+}
+
+.btn-gold {
+	border: 1px solid #FFD700;
+	color: white;
+}
+.btn-gold:hover {
+	background-color: #FFD700;
+}
