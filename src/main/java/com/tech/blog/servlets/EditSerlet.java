@@ -44,6 +44,8 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
     		user.setUsername(name);
     		
     		UserDao dao = new UserDao(ConnectionProvider.getConnection());
+    		
+    		// Sending Previous Details with new One
     		boolean res = dao.editUser(user);
     		if(res) {
     			out.println("Updated");
