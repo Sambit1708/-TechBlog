@@ -1,4 +1,4 @@
-
+<%@ page import="com.tech.blog.entites.Message"%>
 <%@page import="com.tech.blog.entites.User"%>
 <%@ page errorPage="error_page.jpg"%>
 <%
@@ -59,80 +59,111 @@ if (user == null)
 					</li>
 				</ul>
 				<ul class="navbar-nav r-0">
-					<li class="nav-item">
-						<a href="#!" data-bs-toggle="modal" data-bs-target="#profile-modal" class="nav-link active">
-							<i class="fa fa-user-circle"></i>&nbsp;<%=user.getUsername()%></a>
-					</li>
-					<li class="nav-item active">
-						<a href="LogoutServlet" class="nav-link">
-							<i class="fa fa-user"></i>&nbsp;Logout</a>
-					</li>
+					<li class="nav-item"><a href="#!" data-bs-toggle="modal"
+						data-bs-target="#profile-modal" class="nav-link active"> <i
+							class="fa fa-user-circle"></i>&nbsp;<%=user.getUsername()%></a></li>
+					<li class="nav-item active"><a href="LogoutServlet"
+						class="nav-link"> <i class="fa fa-user"></i>&nbsp;Logout
+					</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
 	<!-- NavBar End -->
+	<%
+	HttpSession msgSession = request.getSession();
+	Message msg = (Message) msgSession.getAttribute("msg");
 
+	if (msg != null) {
+		String cssClass = msg.getCssClass();
+	%>
+	<div class="alert <%=cssClass%>" role="alert"><%=msg.getContent()%>
+	</div>
+	<%
+	request.removeAttribute("msg");
+	}
+	%>
 	<!-- Profile Modal Start -->
-	
+
 	<div class="modal fade" id="profile-modal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header primary-bg text-white">
-					<h5 class="modal-title text-uppercase" id="exampleModalLabel">Tech Blog</h5>
+					<h5 class="modal-title text-uppercase" id="exampleModalLabel">My
+						Profile</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="container text-center">
-						<img src="pics/ProfileImg.jpg" class="img-fluid" style="height: 200px; border-radius: 50%;">
-						<h5><%= user.getUsername() %></h5>
+						<img src="pics/ProfileImg.jpg" class="img-fluid"
+							style="height: 200px; border-radius: 50%;">
+						<h5><%=user.getUsername()%></h5>
 						<div id="profile-details">
 							<h3 class="mt2">Profile Details</h3>
 							<table class="table table-striped">
 								<tbody>
-							    <tr>
-							      <th scope="row">ID:</th>
-							      <td><%= user.getId() %></td>
-							    </tr>
-							    <tr>
-							      <th scope="row">Email:</th>
-							      <td><%= user.getEmail() %></td>
-							    </tr>
-							    <tr>
-							      <th scope="row">User Name:</th>
-							      <td><%= user.getUsername() %></td>
-							    </tr>
-							  </tbody>
+									<tr>
+										<th scope="row">ID:</th>
+										<td><%=user.getId()%></td>
+									</tr>
+									<tr>
+										<th scope="row">Email:</th>
+										<td><%=user.getEmail()%></td>
+									</tr>
+									<tr>
+										<th scope="row">User Name:</th>
+										<td><%=user.getUsername()%></td>
+									</tr>
+									<tr>
+										<th scope="row">Gender:</th>
+										<td><%=user.getGender()%></td>
+									</tr>
+									<tr>
+										<th scope="row">About:</th>
+										<td><%=user.getAbout()%></td>
+									</tr>
+									<tr>
+										<th scope="row">Registered:</th>
+										<td><%=user.getDate()%></td>
+									</tr>
+								</tbody>
 							</table>
 						</div>
-						
+
 						<!-- Profile Edit -->
 						<div id="profile-edit" style="display: none;">
 							<h3 class="mt2">Please Edit Carefully</h3>
-							<form action="EditSerlet" method="POST">
+							<form action="EditSerlet" method="POST"
+								enctype="multipart/form-data">
 								<table class="table table-striped">
 									<tbody>
-								    <tr>
-								      <th scope="row">ID:</th>
-								      <td><%= user.getId() %></td>
-								    </tr>
-								    <tr>
-								      <th scope="row">Email:</th>
-								      <td><input type="email" class="form-control" name="user_email" value="<%= user.getEmail() %>"></td>
-								    </tr>
-								    <tr>
-								      <th scope="row">User Name:</th>
-								      <td><input type="text" class="form-control" name="user_name" value="<%= user.getUsername() %>"></td>
-								    </tr>
-								  </tbody>
+										<tr>
+											<th scope="row">ID:</th>
+											<td><%=user.getId()%></td>
+										</tr>
+										<tr>
+											<th scope="row">Email:</th>
+											<td><input type="email" class="form-control"
+												name="user_email" value="<%=user.getEmail()%>"></td>
+										</tr>
+										<tr>
+											<th scope="row">User Name:</th>
+											<td><input type="text" class="form-control"
+												name="user_name" value="<%=user.getUsername()%>"></td>
+										</tr>
+										<tr>
+											<th scope="row">About:</th>
+											<td><textarea class="form-control" name="user_about"><%=user.getAbout()%></textarea></td>
+										</tr>
+									</tbody>
 								</table>
 								<button type="submit" class="btn btn-primary">Update</button>
 							</form>
 						</div>
-						
+
 					</div>
 				</div>
 				<div class="modal-footer">

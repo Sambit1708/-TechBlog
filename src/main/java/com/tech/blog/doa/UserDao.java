@@ -1,8 +1,6 @@
 package com.tech.blog.doa;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 import com.tech.blog.entites.User;
 
@@ -22,12 +20,14 @@ public class UserDao {
 		boolean f = false;
 		try {
 			
-			String query = "INSERT INTO `user` (`username`, `email`, `password`) VALUES (?, ?, ?);";
+			String query = "INSERT INTO `user` (`username`, `email`, `password`, `gender`, `about`) VALUES (?, ?, ?, ?, ?);";
 			
 			PreparedStatement prpt = conn.prepareStatement(query);
 			prpt.setString(1, user.getUsername());
 			prpt.setString(2, user.getEmail());
 			prpt.setString(3, user.getPassword());
+			prpt.setString(4, user.getGender());
+			prpt.setString(5, user.getAbout());
 			
 			prpt.executeUpdate();
 			f = true;
@@ -63,6 +63,15 @@ public class UserDao {
 				
 				String user_password = result.getString("password");
 				user.setPassword(user_password);
+				
+				String user_gender = result.getString("gender");
+				user.setGender(user_gender);
+				
+				String user_about = result.getString("about");
+				user.setAbout(user_about);
+				
+				Timestamp create_date = result.getTimestamp("create_date");
+				user.setDate(create_date);
 			}
 			
 		} catch(Exception e) {
@@ -78,11 +87,12 @@ public class UserDao {
 		
 		try {
 			
-			String query = "UPDATE USER SET email=?, username=? WHERE id=?;";
+			String query = "UPDATE USER SET email=?, username=?, about=?  WHERE id=?;	";
 			PreparedStatement prep = conn.prepareStatement(query);
 			prep.setString(1, user.getEmail());
 			prep.setString(2, user.getUsername());
-			prep.setInt(3, user.getId());
+			prep.setString(3, user.getAbout());
+			prep.setInt(4, user.getId());
 			
 			prep.executeUpdate();
 			res = true;
