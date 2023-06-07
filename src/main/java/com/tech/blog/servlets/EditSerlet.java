@@ -39,13 +39,19 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
 			String about = request.getParameter("user_about");
 
 			HttpSession session = request.getSession();
-			User user = (User) session.getAttribute("currentUser");
-			user.setEmail(email);
-			user.setUsername(name);
-			user.setAbout(about);
+			User userEdit = (User) session.getAttribute("currentUser");
+			if(!userEdit.getEmail().contains(email) && email!=null) {
+				userEdit.setEmail(email);
+			}
+			if(!userEdit.getUsername().contains(name) && name!=null) {
+				userEdit.setUsername(name);
+			}
+			if(!userEdit.getAbout().contains(about) && about!=null) {
+				userEdit.setAbout(about);
+			}
 
 			UserDao dao = new UserDao(ConnectionProvider.getConnection());
-			boolean res = dao.editUser(user);
+			boolean res = dao.editUser(userEdit);
 			if (res) {
 				out.println("Updated");
 				Message msg = new Message("Profile Details Updated!", "success", "alert-success");

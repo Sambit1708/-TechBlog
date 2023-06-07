@@ -40,7 +40,7 @@
 							<div class="alert <%= cssClass%>" role="alert"><%= msg.getContent()%>
 							</div>
 						<%
-								request.removeAttribute("msg");
+								request.getSession().removeAttribute("msg");
 							}
 							
 						%>
@@ -67,12 +67,6 @@
 			</div>
 		</div>
 	</main>
-
-
-
-
-
-
 
 
 	<script
