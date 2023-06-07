@@ -1,4 +1,20 @@
+function loadPosts(catId, temp) {
+	
+	$('.c-link').removeClass('active')
+	
+	$.ajax({
+		url: 'load_post.jsp',
+		data: {cid: catId},
+		success: function(data, textStatus, jqXHR) {
+			$('#loader').hide();
+			$('#post-container').html(data)
+			$(temp).addClass('active')
+		}
+	})
+}
+
 $(document).ready(function() {
+		
 	$(".lognav").click(function() {
 		window.location.href = 'login.jsp';
 		return false;
@@ -18,7 +34,7 @@ $(document).ready(function() {
 		$('#submit-btn').hide();
 		$('#reset-btn').hide();
 		$('#loader').show()
-
+	console.log(formData)
 		$.ajax({
 			url: "RegisterServlet",
 			type: "POST",
@@ -60,8 +76,7 @@ $(document).ready(function() {
 				$('#reset-btn').hide();
 				$('#loader').show()
 			},
-			processData: false,
-			currentType: false
+			processData: false
 		})
 	})
 	
@@ -83,5 +98,33 @@ $(document).ready(function() {
 		}
 	})
 	
+	// Add Post Form
+	$('#add-post-form').on("submit",function(event){
+		// this code gets called when form is submitted
+		event.preventDefault();
+		let formData = new FormData(this)
+		$.ajax({
+			url: 'AddPostServlet',
+			type: 'POST',
+			data: formData,
+			success: function(data, textStatus, jqXHR){
+				if(data.trim().indexOf('done') != -1) {
+					Swal.fire("Done","Saved Post","success")
+				}
+				else{
+					Swal.fire("Error","Could not save the post","error")
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				
+			},
+			processData: false,
+			contentType: false
+		})
+		
+	})
+	let allPostref = $('.c-link')[0]
+	loadPosts(0, allPostref)
+
 })
 

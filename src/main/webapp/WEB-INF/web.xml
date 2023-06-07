@@ -53,4 +53,14 @@
     <servlet-name>EditSerlet</servlet-name>
     <url-pattern>/EditSerlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddPostServlet</display-name>
+    <servlet-name>AddPostServlet</servlet-name>
+    <servlet-class>com.tech.blog.servlets.AddPostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddPostServlet</servlet-name>
+    <url-pattern>/AddPostServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

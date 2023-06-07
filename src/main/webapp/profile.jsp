@@ -1,12 +1,10 @@
+<%@page import="com.tech.blog.helper.ConnectionProvider"%>
 <%@ page import="com.tech.blog.entites.Message"%>
 <%@page import="com.tech.blog.entites.User"%>
+<%@page import="com.tech.blog.entites.Categories"%>
+<%@page import="com.tech.blog.doa.PostDao"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page errorPage="error_page.jpg"%>
-<%
-User user = (User) session.getAttribute("currentUser");
-if (user == null)
-	response.sendRedirect("login.jsp");
-%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -22,162 +20,72 @@ if (user == null)
 	crossorigin="anonymous">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <!-- Custom Style -->
 <link href="css/style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 	<!-- NavBar Start -->
 
-	<nav class="navbar navbar-expand-lg navbar-dark primary-bg">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="#"><i class="fa fa-tumblr-square"></i>
-				Tech Blog</a>
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-				aria-controls="navbarSupportedContent" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse d-flex justify-content-between"
-				id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="index.jsp"><i class="fa fa-home"></i>
-							Home</a></li>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#" role="button"
-						data-bs-toggle="dropdown" aria-expanded="false"> <i
-							class="fa fa-check-square"></i> Categories
-					</a>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Java Servlet J2EE</a></li>
-							<li><a class="dropdown-item" href="#">Hibernate</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Spring Boot</a></li>
-						</ul></li>
-					<li class="nav-item"><a class="nav-link disabled">Contact</a>
-					</li>
-				</ul>
-				<ul class="navbar-nav r-0">
-					<li class="nav-item">
-						<a href="#!" data-bs-toggle="modal" data-bs-target="#profile-modal" class="nav-link active">
-							<i class="fa fa-user-circle"></i>&nbsp;<%=user.getUsername()%></a>
-					</li>
-					<li class="nav-item active">
-						<a href="LogoutServlet" class="nav-link">
-							<i class="fa fa-user"></i>&nbsp;Logout</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+	<%@ include file="navbar.jsp" %>
 
 	<!-- NavBar End -->
 	<%
-	HttpSession msgSession = request.getSession();
-	Message msg = (Message) msgSession.getAttribute("msg");
-	if (msg != null) {
-		String cssClass = msg.getCssClass();
+		HttpSession msgSession = request.getSession();
+		Message msg = (Message) msgSession.getAttribute("msg");
+		if (msg != null) {
+			String cssClass = msg.getCssClass();
 	%>
-	<div class="alert <%=cssClass%>" role="alert"><%=msg.getContent()%>
-	</div>
+	<div class="alert <%=cssClass%>" role="alert"><%=msg.getContent()%></div>
 	<%
-	request.removeAttribute("msg");
+		request.getSession().removeAttribute("msg");
 	}
 	%>
-	<!-- Profile Modal Start -->
 
-	<div class="modal fade" id="profile-modal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header primary-bg text-white">
-					<h5 class="modal-title text-uppercase" id="exampleModalLabel">My
-						Profile</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="container text-center">
-						<img src="pics/ProfileImg.jpg" class="img-fluid"
-							style="height: 200px; border-radius: 50%;">
-						<h5><%=user.getUsername()%></h5>
-						<div id="profile-details">
-							<h3 class="mt2">Profile Details</h3>
-							<table class="table table-striped">
-								<tbody>
-									<tr>
-										<th scope="row">ID:</th>
-										<td><%=user.getId()%></td>
-									</tr>
-									<tr>
-										<th scope="row">Email:</th>
-										<td><%=user.getEmail()%></td>
-									</tr>
-									<tr>
-										<th scope="row">User Name:</th>
-										<td><%=user.getUsername()%></td>
-									</tr>
-									<tr>
-										<th scope="row">Gender:</th>
-										<td><%=user.getGender()%></td>
-									</tr>
-									<tr>
-										<th scope="row">About:</th>
-										<td><%=user.getAbout()%></td>
-									</tr>
-									<tr>
-										<th scope="row">Registered:</th>
-										<td><%=user.getDate()%></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
 
-						<!-- Profile Edit -->
-						<div id="profile-edit" style="display: none;">
-							<h3 class="mt2">Please Edit Carefully</h3>
-							<form action="EditSerlet" method="POST" enctype="multipart/form-data">
-								<table class="table table-striped">
-									<tbody>
-										<tr>
-											<th scope="row">ID:</th>
-											<td><%=user.getId()%></td>
-										</tr>
-										<tr>
-											<th scope="row">Email:</th>
-											<td><input type="email" class="form-control"
-												name="user_email" value="<%=user.getEmail()%>"></td>
-										</tr>
-										<tr>
-											<th scope="row">User Name:</th>
-											<td><input type="text" class="form-control"
-												name="user_name" value="<%=user.getUsername()%>"></td>
-										</tr>
-										<tr>
-											<th scope="row">About:</th>
-											<td><textarea class="form-control" name="user_about"><%=user.getAbout()%></textarea></td>
-										</tr>
-									</tbody>
-								</table>
-								<button type="submit" class="btn btn-primary">Update</button>
-							</form>
-						</div>
+	<!-- Latest Post -->
 
+	<main>
+		<div class="container">
+			<div class="row">
+				<!-- First col -->
+				<div class="col-md-4 mt-5">
+					<!-- categories -->
+					<div class="list-group">
+						<button type="button"
+							class="c-link list-group-item list-group-item-action active"
+							onClick="loadPosts(0, this)">All Posts</button>
+						<%
+							PostDao postdaotemp = new PostDao(ConnectionProvider.getConnection());
+							ArrayList<Categories> categories = postdaotemp.getAllCategories();
+							if (categories != null) {
+								for (Categories cat : categories) {
+						%>
+						<button type="button"
+							class="c-link list-group-item list-group-item-action"
+							id="categories-select"
+							onClick="loadPosts(<%=cat.getCid()%>, this)"><%=cat.getName()%></button>
+						<%
+								}
+							}
+						%>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Close</button>
-					<button type="button" id="profile-edit-btn" class="btn btn-primary">Edit</button>
+
+				<!-- First col -->
+				<div class="col-md-8">
+					<!-- post -->
+					<div class="container text-center" id="loader">
+						<i class="fa fa-refresh fa-4x fa-spin"></i>
+						<h3 class="mt-2">Loading....</h3>
+					</div>
+					<div class="container container-fluid" id="post-container"></div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</main>
 
-	<!-- Profile Modal End -->
-
-
+	<!-- Latest Post -->
 
 
 	<script
@@ -191,6 +99,7 @@ if (user == null)
 		crossorigin="anonymous">
 		
 	</script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="js/myJs.js" type="text/javascript"></script>
 </body>
 </html>

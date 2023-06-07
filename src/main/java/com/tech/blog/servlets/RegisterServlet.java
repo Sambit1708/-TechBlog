@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class RegisterServlet
  */
-@MultipartConfig
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -46,11 +45,11 @@ public class RegisterServlet extends HttpServlet {
         		String gender = request.getParameter("gender");
         		String about = request.getParameter("about");
         		//Create user object to set data
-        		User user = new User(username, useremail, userpassword, gender, about);
+        		User userTemp = new User(username, useremail, userpassword, gender, about);
         			
         		// Creating object for user doa
         		UserDao dao = new UserDao(ConnectionProvider.getConnection());
-        		boolean saveUserStatus = dao.saveUser(user);
+        		boolean saveUserStatus = dao.saveUser(userTemp);
         		if(saveUserStatus) {
         			out.println("done");
         		} else {

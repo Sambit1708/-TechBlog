@@ -32,47 +32,36 @@
 						<div class="card-body">
 							<form action="RegisterServlet" method="POST" id="regisForm">
 								<div class="form-group">
-									<label for="InputName" class="form-label">User Name</label> <input
-										type="text" class="form-control" id="InputName"
-										name="user_name">
+									<label for="InputName" class="form-label">User Name</label> 
+									<input type="text" class="form-control" id="InputName" name="user_name">
 								</div>
 								<div class="form-group">
-									<label for="exampleInputEmail1" class="form-label">Email
-										address</label> <input type="email" class="form-control"
-										id="exampleInputEmail1" name="user_email">
+									<label for="exampleInputEmail1" class="form-label">Email address</label> 
+									<input type="email" class="form-control" id="exampleInputEmail1" name="user_email">
 								</div>
 								<div class="form-group">
 									<label for="exampleInputPassword1" class="form-label">Password</label>
-									<input type="password" class="form-control"
-										id="exampleInputPassword1" name="user_password">
+									<input type="password" class="form-control" id="exampleInputPassword1" name="user_password">
 								</div>
 								<div class="radio Container d-flex">
 									<label for="radioGender" class="form-label">Gender: </label>
 									<div class="form-check ml-3">
-										<input class="form-check-input" type="radio" name="gender"
-											value="Male" id="male" checked> <label
-											class="form-check-label" for="flexRadioDefault1">
-											Male </label>
+										<input class="form-check-input" type="radio" name="gender" value="Male" id="male" checked> 
+										<label class="form-check-label" for="flexRadioDefault1"> Male </label>
 									</div>
 									<div class="form-check ml-3">
-										<input class="form-check-input" value="Female" type="radio"
-											name="gender" id="female"> <label
-											class="form-check-label" for="flexRadioDefault2">
-											Female </label>
+										<input class="form-check-input" value="Female" type="radio" name="gender" id="female"> 
+										<label class="form-check-label" for="flexRadioDefault2"> Female </label>
 									</div>
 								</div>
 								<div class="form-group">
-									<textarea name="about" class="form-control" id="aboutForm"
-										rows="5" placeholder="Enter Something about yourselfs"></textarea>
+									<textarea name="about" class="form-control" id="aboutForm" rows="5" placeholder="Enter Something about yourselfs"></textarea>
 								</div>
 								<div class="form-group form-check">
-									<input type="checkbox" class="form-check-input"
-										id="exampleCheck1" name="check"> <label
-										class="form-check-label" for="exampleCheck1">Agree to
-										our Terms & Condition</label>
+									<input type="checkbox" class="form-check-input" id="exampleCheck1" name="check"> 
+									<label class="form-check-label" for="exampleCheck1">Agree to our Terms & Condition</label>
 								</div>
-								<div class="container text-center" id="loader"
-									style="display: none;">
+								<div class="container text-center" id="loader" style="display: none;">
 									<i class="fa fa-refresh fa-spin fa-4x"></i>
 									<h4>Please Wait...</h4>
 								</div>

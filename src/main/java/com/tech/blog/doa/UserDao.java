@@ -106,5 +106,4 @@ public class UserDao {
 		}
 		return res;
 	}
-	
 }
